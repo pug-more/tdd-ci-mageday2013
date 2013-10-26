@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>TDD & Continuous Integration with Magento</title>
+
+		<meta name="description" content="Overview on tools and libraries that makes TDD and CI possible with Magento">
+		<meta name="author" content="Manuele Menozzi - Webgriffe®">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>TDD & Continuous Integration</h1>
+					<h3>with Magento</h3>
+
+                    <br />
+                    <br />
+                    <img src="http://www.gravatar.com/avatar/8c6973dad7179d7238b6e42adc8add08?s=145" alt="Gravatar" style="float:left; margin-right: 15px; margin-top: 0;"/>
+                    <p style="overflow: hidden; text-align: left;">
+                        <small>
+                            <strong>Manuele Menozzi</strong><br />
+                            Senior PHP Developer @ <a href="http://www.webgriffe.com/">Webgriffe®</a><br />
+                            Proud <a href="http://www.grusp.it/">GrUSP</a> & <a href="http://more.grusp.org">PUG MoRe</a> member<br />
+                            First Magento extension written in the 2009<br />
+                            <br />
+                            Email: <a href="mailto:mmenozzi@webgriffe.com">mmenozzi@webgriffe.com</a> / Twitter: <a href="https://twitter.com/mmenozzi">@mmenozzi</a><br />
+                        </small>
+                    </p>
+				</section>
+
+                <section>
+                    <h2>Test Driven Development</h2>
+
+                    <blockquote class="fragment">The repetition of a very short development cycle</blockquote>
+
+                    <p class="fragment">
+                        <img src="img/red-green-refactorFINAL2.png" alt="Red - Green - Refactor"/>
+                    </p>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Test Driven Development</h2>
+                        <h3>Example</h3>
+
+<pre><code class="php" data-trim>
+class MoneyTest extends \PHPUnit_Framework_TestCase
+{
+    public function testMultiplication()
+    {
+        $five = new Money(5);
+        $five->times(2);
+        $this->assertEquals(10, $five->amount);
+    }
+}
+</code></pre>
+
+<pre class="fragment"><code class="php" data-trim>
+class Money
+{
+    public $amount;
+
+    public function __construct($amount)
+    {
+        // TODO
+    }
+
+    public function times($multiplier)
+    {
+        // TODO
+    }
+}
+</code></pre>
+
+                        <p class="fragment"><span style="color:red;">RED</span></p>
+                    </section>
+
+                    <section>
+                        <h2>Test Driven Development</h2>
+                        <h3>Example</h3>
+
+<pre><code class="php" data-trim>
+class Money
+{
+    public $amount = 10; // aka 5 * 2
+
+    public function __construct($amount)
+    {
+        // TODO
+    }
+
+    public function times($multiplier)
+    {
+        // TODO
+    }
+}
+</code></pre>
+
+                        <p class="fragment"><span style="color:lawngreen;">GREEN</span></p>
+                    </section>
+
+                    <section>
+                        <h2>Test Driven Development</h2>
+                        <h3>Example</h3>
+
+<pre><code class="php" data-trim>
+class Money
+{
+    public $amount = 0;
+
+    public function __construct($amount)
+    {
+        $this->amount = $amount;
+    }
+
+    public function times($multiplier)
+    {
+        $this->amount *= $multiplier;
+    }
+}
+</code></pre>
+                        <p class="fragment">REFACTOR</p>
+
+                    </section>
+
+                </section>
+
+                <section>
+                    <h2>Test Driven Development</h2>
+                    <h3>benefits</h3>
+
+                    <ul>
+                        <li class="fragment">You can write small feature's subsets</li>
+                        <li class="fragment">You don't have to worry about all the complexity of your feature</li>
+                        <li class="fragment">All features are tested</li>
+                        <li class="fragment">You reduce bugs and regressions rate</li>
+                        <li class="fragment">Your code stays clean</li>
+                        <li class="fragment">Your code is documented</li>
+                        <li class="fragment">And last but not least, you're more confident in making changes!</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Tests Pyramid</h2>
+
+                    <img src="img/TestingPyramid.png" alt="Unit - Integration - Functional - Manual" />
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Unit Tests with Magento</h2>
+
+                        <p><span class="fragment">Magento => Hardcoded dependencies </span><span class="fragment">=> Testing hell</span></p>
+<pre><code class="php" data-trim>
+class Vendor_Module_Model_Something extends Mage_Core_Model_Abstract
+{
+    public function doSomethingWithProduct($productId)
+    {
+        $product = Mage::getModel('catalog/product')->load($productId);
+        //do something with $product
+    }
+}
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Unit Tests with Magento</h2>
+                        <p>We have to refactor, for example with dependency injection&hellip;</p>
+
+<pre><code class="php" data-trim>
+class Vendor_Module_Model_Something extends Mage_Core_Model_Abstract
+{
+    protected $productModel;
+
+    public function setProductModel(
+        Mage_Catalog_Model_Product $productModel
+    ) {
+        $this->productModel = $productModel;
+    }
+
+    public function doSomethingWithProduct($productId)
+    {
+        $product = $this->productModel->load($productId);
+        //do something with $product
+    }
+}
+</code></pre>
+                    </section>
+
+                    <section>
+                        <h2>Unit Tests with Magento</h2>
+
+                        <p>&hellip; so we can test it with something like this:</p>
+
+<pre><code class="php" data-trim>
+class Vendor_Module_Tests_Unit_SomethingTest extends
+    \PHPUnit_Framework_TestCase
+{
+    public function testDoSomethingWithProduct()
+    {
+        $productModelMock = $this->getMock('Mage_Catalog_Model_Product');
+        $productModelMock->expects($this->once())
+            ->method('load')
+            ->with(1)
+            ->will($this->returnValue(new Mage_Catalog_Model_Product()));
+
+        $somethingModel = new Vendor_Module_Model_Something();
+        $somethingModel->setProductModel($productModelMock);
+        $somethingModel->doSomethingWithProduct(1);
+        // assert that something has been done
+    }
+}
+</code></pre>
+                    </section>
+
+                </section>
+
+                <section>
+                    <h2>
+                        Integration & Functional tests<br/>
+                        with Magento
+                    </h2>
+                    <br />
+
+                    <p class="fragment">
+                        <strong>EcomDev_PHPUnit</strong><br/>
+                        <a href="https://github.com/EcomDev/EcomDev_PHPUnit">
+                            github.com/EcomDev/EcomDev_PHPUnit
+                        </a>
+                    </p>
+                </section>
+
+                <section>
+                    <h2>EcomDev_PHPUnit</h2>
+
+                    <ul>
+                        <li class="fragment">Magento extension</li>
+                        <li class="fragment">Doesn't change core files</li>
+                        <li class="fragment">Separate database connection is used for tests</li>
+                        <li class="fragment">Different levels of test integration</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>EcomDev_PHPUnit</h2>
+                    <h3>Easy installation</h3>
+
+<pre style="width:1110px;"><code class="no-highlight" data-trim>
+$ modman clone [--branch=dev] git://github.com/EcomDev/EcomDev_PHPUnit.git
+$ cd /path/to/magento/shell
+$ php ecomdev-phpunit.php -a magento-config --db-name db_name --base-url http://your.magento.url/
+$ phpunit
+</code></pre>
+                </section>
+
+                <section>
+                    <h2>EcomDev_PHPUnit</h2>
+
+                    <p>Enable an extension for testing</p>
+
+                    <pre><code class="xml" data-trim>
+&lt;!-- app/code/local/Vendor/Module/etc/config.xml --&gt;
+&lt;phpunit&gt;
+    &lt;suite&gt;
+        &lt;modules&gt;
+            &lt;Vendor_Module /&gt;
+        &lt;/modules&gt;
+    &lt;/suite&gt;
+&lt;/phpunit&gt;
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>EcomDev_PHPUnit</h2>
+                    <h3>Different levels of test integration</h3>
+
+                    <ul>
+                        <li class="fragment">
+                            <strong>EcomDev_PHPUnit_Test_Case</strong> is for testing models, blocks and helpers
+                        </li>
+                        <li class="fragment">
+                            <strong>EcomDev_PHPUnit_Test_Case_Config</strong> is for testing your module configuration
+                        </li>
+                        <li class="fragment">
+                            <strong>EcomDev_PHPUnit_Test_Case_Controller</strong> is for testing your controller actions
+                            and layout rendering process
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>EcomDev_PHPUnit</h2>
+
+                    <p>Put every test in its place</p>
+<pre><code class="no-highlight" data-trim>
+    app/code/local/Vendor/Module
+    ├── Block
+    ├── Helper
+    ├── Model
+    ├── Test
+    │   ├── Block        (EcomDev_PHPUnit_Test_Case)
+    │   ├── Config       (EcomDev_PHPUnit_Test_Case_Config)
+    │   ├── Controller   (EcomDev_PHPUnit_Test_Case_Controller)
+    │   ├── Helper       (EcomDev_PHPUnit_Test_Case)
+    │   └── Model        (EcomDev_PHPUnit_Test_Case)
+    ├── controllers
+    └── etc
+</code></pre>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>EcomDev_PHPUnit</h2>
+                        <h3>Model/Block/Helper testing</h3>
+
+                        <ul>
+                            <li class="fragment"><strong>Fixtures</strong> support (YAML files)</li>
+                            <li class="fragment"><strong>Expectations</strong> support (YAML files)</li>
+                            <li class="fragment"><strong>Data providers</strong> support (YAML files)</li>
+                            <li class="fragment"><strong>Indexing</strong> control (@doNotIndex & @doNotIndexAll)</li>
+                            <li class="fragment">
+                                Useful <strong>test doubles</strong><br/>
+                                <small>
+                                    getModelMock(),
+                                    getResourceModelMock(),
+                                    getBlockMock(),
+                                    getHelperMock(),
+                                    replaceByMock(),
+                                    &hellip;
+                                </small>
+                            </li>
+                            <li class="fragment">
+                                Useful <strong>assertions</strong><br/>
+                                <small>
+                                    assertEventDispatched(),
+                                    assertEventDispatchedExactly(),
+                                    assertEventDispatchedAtLeast(),
+                                    &hellip;
+                                </small>
+                            </li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>EcomDev_PHPUnit</h2>
+                        <h3>Model/Block/Helper testing</h3>
+
+<pre><code class="php" data-trim>
+class EcomDev_Example_Test_Model_Product extends EcomDev_PHPUnit_Test_Case
+{
+    /**
+    * @test
+    * @loadFixture
+    * @doNotIndexAll
+    * @dataProvider dataProvider
+    */
+    public function priceCalculation($productId, $storeId)
+    {
+        $storeId = Mage::app()->getStore($storeId)->getId();
+        $product = Mage::getModel('catalog/product')->setStoreId($storeId)->load($productId);
+        $expected = $this->expected('%s-%s', $productId, $storeId);
+        $this->assertEquals(
+            $expected->getFinalPrice(),
+            $product->getFinalPrice()
+        );
+        $this->assertEquals(
+            $expected->getPrice(),
+            $product->getPrice()
+        );
+    }
+}
+</code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>EcomDev_PHPUnit</h2>
+                        <h3>Fixtures</h3>
+
+                        <ul>
+                            <li class="fragment">Implemented with YAML files</li>
+                            <li class="fragment">Enabled with @loadFixture annotation</li>
+                            <li class="fragment">Database purge is performed after test run</li>
+                            <li class="fragment">Database purge is performed only for fixtures-specific tables</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>EcomDev_PHPUnit</h2>
+                        <h3>Fixtures</h3>
+
+                        <p>YAML files capabilities:</p>
+                        <ul>
+                            <li class="fragment">scope</li>
+                            <li class="fragment">config</li>
+                            <li class="fragment">configXml</li>
+                            <li class="fragment">eav</li>
+                            <li class="fragment">tables</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>EcomDev_PHPUnit</h2>
+                        <h3>Fixtures</h3>
+<pre><code class="yaml" data-trim>
+    scope:
+    website: # Initialize websites
+    - website_id: 2
+    name: USA Website
+    group: # Initializes store groups
+    store: # Initializes store views
+    config:
+    default/catalog/price/scope: 1 # Set price scope to website
+    eav:
+    catalog_product:
+    - entity_id: 1
+    type_id: simple
+    sku: book
+    name: Book
+    short_description: Book
+    description: Book
+
+</code></pre>
+
+                    </section>
+
+                </section>
+
+                <section>
+
+                    <section>
+                        <h2>EcomDev_PHPUnit</h2>
+                        <h3>Configuration testing</h3>
+
+                        <p>Many useful configuration assertions:</p>
+
+                        <ul>
+                            <li class="fragment">
+                                Class Alias Assertions<br/>
+                                <small>
+                                    assertBlockAlias(),
+                                    assertModelAlias(),
+                                    assertHelperAlias(),
+                                    &hellip;
+                                </small>
+                            </li>
+                            <li class="fragment">
+                                Module Assertions<br/>
+                                <small>
+                                    assertModuleCodePool(),
+                                    assertModuleDepends(),
+                                    assertModuleVersion(),
+                                    &hellip;
+                                </small>
+                            </li>
+                            <li class="fragment">
+                                Layout Assertions<br/>
+                                <small>
+                                    assertLayoutFileDefined(),
+                                    assertLayoutFileExists(),
+                                    assertLayoutFileExistsInTheme(),
+                                    &hellip;
+                                </small>
+                            </li>
+                            <li class="fragment">
+                                Event Observer Assertions<br/>
+                                <small>
+                                    assertEventObserverDefined(),
+                                    assertEventObserverNotDefined(),
+                                    &hellip;
+                                </small>
+                            </li>
+                            <li class="fragment">
+                                Config Node Assertions<br/>
+                                <small>
+                                    assertConfigNodeHasChild(),
+                                    assertConfigNodeHasChildren(),
+                                    assertConfigNodeContainsValue(),
+                                    &hellip;
+                                </small>
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>EcomDev_PHPUnit</h2>
+                        <h3>Configuration testing</h3>
+
+<pre><code class="php" data-trim>
+// app/code/local/Vendor/Module/Test/Config/Main.php
+
+class Vendor_Module_Test_Config_Main extends
+    EcomDev_PHPUnit_Test_Case_Config
+{
+    public function testRewrite()
+    {
+        $this->assertModelAlias(
+            'catalog/convert_adapter_product',
+            'Vendor_Module_Model_DataFlow_Catalog_Product_Adapter'
+        );
+        $this->assertBlockAlias(
+            'adminhtml/system_convert_gui_edit_tab_wizard',
+            'Vendor_Module_Block_Wizard'
+        );
+    }
+}
+</code></pre>
+                    </section>
+
+                </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
