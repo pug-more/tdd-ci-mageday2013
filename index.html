@@ -87,15 +87,9 @@ class Money
 {
     public $amount;
 
-    public function __construct($amount)
-    {
-        // TODO
-    }
+    public function __construct($amount) { /* TODO */ }
 
-    public function times($multiplier)
-    {
-        // TODO
-    }
+    public function times($multiplier) { /* TODO */ }
 }
 </code></pre>
 
@@ -113,12 +107,12 @@ class Money
 
     public function __construct($amount)
     {
-        // TODO
+        /* TODO */
     }
 
     public function times($multiplier)
     {
-        // TODO
+        /* TODO */
     }
 }
 </code></pre>
@@ -272,10 +266,11 @@ class Vendor_Module_Tests_Unit_SomethingTest extends
                     <h2>EcomDev_PHPUnit</h2>
                     <h3>Easy installation</h3>
 
-<pre style="width:1110px;"><code class="no-highlight" data-trim>
+<pre style="width:1110px;"><code class="shell" data-trim>
 $ modman clone [--branch=dev] git://github.com/EcomDev/EcomDev_PHPUnit.git
 $ cd /path/to/magento/shell
 $ php ecomdev-phpunit.php -a magento-config --db-name db_name --base-url http://your.magento.url/
+$ cd /path/to/magento
 $ phpunit
 </code></pre>
                 </section>
@@ -336,67 +331,34 @@ $ phpunit
                 </section>
 
                 <section>
-                    <section>
-                        <h2>EcomDev_PHPUnit</h2>
-                        <h3>Model/Block/Helper testing</h3>
+                    <h2>EcomDev_PHPUnit</h2>
 
-                        <ul>
-                            <li class="fragment"><strong>Fixtures</strong> support (YAML files)</li>
-                            <li class="fragment"><strong>Expectations</strong> support (YAML files)</li>
-                            <li class="fragment"><strong>Data providers</strong> support (YAML files)</li>
-                            <li class="fragment"><strong>Indexing</strong> control (@doNotIndex & @doNotIndexAll)</li>
-                            <li class="fragment">
-                                Useful <strong>test doubles</strong><br/>
-                                <small>
-                                    getModelMock(),
-                                    getResourceModelMock(),
-                                    getBlockMock(),
-                                    getHelperMock(),
-                                    replaceByMock(),
-                                    &hellip;
-                                </small>
-                            </li>
-                            <li class="fragment">
-                                Useful <strong>assertions</strong><br/>
-                                <small>
-                                    assertEventDispatched(),
-                                    assertEventDispatchedExactly(),
-                                    assertEventDispatchedAtLeast(),
-                                    &hellip;
-                                </small>
-                            </li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>EcomDev_PHPUnit</h2>
-                        <h3>Model/Block/Helper testing</h3>
-
-<pre><code class="php" data-trim>
-class EcomDev_Example_Test_Model_Product extends EcomDev_PHPUnit_Test_Case
-{
-    /**
-    * @test
-    * @loadFixture
-    * @doNotIndexAll
-    * @dataProvider dataProvider
-    */
-    public function priceCalculation($productId, $storeId)
-    {
-        $storeId = Mage::app()->getStore($storeId)->getId();
-        $product = Mage::getModel('catalog/product')->setStoreId($storeId)->load($productId);
-        $expected = $this->expected('%s-%s', $productId, $storeId);
-        $this->assertEquals(
-            $expected->getFinalPrice(),
-            $product->getFinalPrice()
-        );
-        $this->assertEquals(
-            $expected->getPrice(),
-            $product->getPrice()
-        );
-    }
-}
-</code></pre>
-                    </section>
+                    <ul>
+                        <li class="fragment"><strong>Fixtures</strong> support (YAML files)</li>
+                        <li class="fragment"><strong>Expectations</strong> support (YAML files)</li>
+                        <li class="fragment"><strong>Data providers</strong> support (YAML files)</li>
+                        <li class="fragment"><strong>Indexing</strong> control (@doNotIndex & @doNotIndexAll)</li>
+                        <li class="fragment">
+                            Useful <strong>test doubles</strong><br/>
+                            <small>
+                                getModelMock(),
+                                getResourceModelMock(),
+                                getBlockMock(),
+                                getHelperMock(),
+                                replaceByMock(),
+                                &hellip;
+                            </small>
+                        </li>
+                        <li class="fragment">
+                            Useful <strong>assertions</strong><br/>
+                            <small>
+                                assertEventDispatched(),
+                                assertEventDispatchedExactly(),
+                                assertEventDispatchedAtLeast(),
+                                &hellip;
+                            </small>
+                        </li>
+                    </ul>
                 </section>
 
                 <section>
@@ -407,8 +369,7 @@ class EcomDev_Example_Test_Model_Product extends EcomDev_PHPUnit_Test_Case
                         <ul>
                             <li class="fragment">Implemented with YAML files</li>
                             <li class="fragment">Enabled with @loadFixture annotation</li>
-                            <li class="fragment">Database purge is performed after test run</li>
-                            <li class="fragment">Database purge is performed only for fixtures-specific tables</li>
+                            <li class="fragment">Database purge system (after test run & not for all tables)</li>
                         </ul>
                     </section>
                     <section>
@@ -424,114 +385,121 @@ class EcomDev_Example_Test_Model_Product extends EcomDev_PHPUnit_Test_Case
                             <li class="fragment">tables</li>
                         </ul>
                     </section>
-                    <section>
-                        <h2>EcomDev_PHPUnit</h2>
-                        <h3>Fixtures</h3>
-<pre><code class="yaml" data-trim>
-    scope:
-    website: # Initialize websites
-    - website_id: 2
-    name: USA Website
-    group: # Initializes store groups
-    store: # Initializes store views
-    config:
-    default/catalog/price/scope: 1 # Set price scope to website
-    eav:
-    catalog_product:
-    - entity_id: 1
-    type_id: simple
-    sku: book
-    name: Book
-    short_description: Book
-    description: Book
+                </section>
 
-</code></pre>
+                <section>
+                    <h2>EcomDev_PHPUnit</h2>
+                    <h3>Configuration testing</h3>
 
-                    </section>
+                    <p>Many useful configuration assertions:</p>
+
+                    <ul>
+                        <li class="fragment">
+                            Class Alias Assertions<br/>
+                            <small>
+                                assertBlockAlias(),
+                                assertModelAlias(),
+                                assertHelperAlias(),
+                                &hellip;
+                            </small>
+                        </li>
+                        <li class="fragment">
+                            Module Assertions<br/>
+                            <small>
+                                assertModuleCodePool(),
+                                assertModuleDepends(),
+                                assertModuleVersion(),
+                                &hellip;
+                            </small>
+                        </li>
+                        <li class="fragment">
+                            Layout Assertions<br/>
+                            <small>
+                                assertLayoutFileDefined(),
+                                assertLayoutFileExists(),
+                                assertLayoutFileExistsInTheme(),
+                                &hellip;
+                            </small>
+                        </li>
+                        <li class="fragment">
+                            Event Observer Assertions<br/>
+                            <small>
+                                assertEventObserverDefined(),
+                                assertEventObserverNotDefined(),
+                                &hellip;
+                            </small>
+                        </li>
+                        <li class="fragment">
+                            Config Node Assertions<br/>
+                            <small>
+                                assertConfigNodeHasChild(),
+                                assertConfigNodeHasChildren(),
+                                assertConfigNodeContainsValue(),
+                                &hellip;
+                            </small>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+
+                    <h2>EcomDev_PHPUnit</h2>
+                    <h3>Controller testing</h3>
+
+                    <ul>
+                        <li class="fragment"><em>dispatch()</em> of controller actions</li>
+                        <li class="fragment">
+                            Request object handling <br/>
+                            <small>setCookies(), setParams(), setHeaders(), &hellip;</small>
+                        </li>
+                        <li class="fragment">
+                            Response object handling & assertions <br/>
+                            <small>
+                                getSentHeaders(), getOutputBody(), assertResponseHttpCode(), assertRedirect(), &hellip;
+                            </small>
+                        </li>
+                        <li class="fragment">
+                            Layout assertions <br/>
+                            <small>
+                                assertLayoutLoaded(), assertLayoutBlockCreated(), assertLayoutBlockTypeOf(),
+                                assertLayoutBlockParentEquals(), assertLayoutBlockAfter(), &hellip;
+                            </small>
+                        </li>
+                        <li class="fragment">
+                            Routing assertions <br/>
+                            <small>
+                                assertRequestDispatched(), assertRequestRoute(), assertRequestControllerName(), &hellip;
+                            </small>
+                        </li>
+                    </ul>
 
                 </section>
 
                 <section>
 
-                    <section>
-                        <h2>EcomDev_PHPUnit</h2>
-                        <h3>Configuration testing</h3>
+                    <h2>EcomDev_PHPUnit</h2>
+                    <h3>Controller testing</h3>
 
-                        <p>Many useful configuration assertions:</p>
-
-                        <ul>
-                            <li class="fragment">
-                                Class Alias Assertions<br/>
-                                <small>
-                                    assertBlockAlias(),
-                                    assertModelAlias(),
-                                    assertHelperAlias(),
-                                    &hellip;
-                                </small>
-                            </li>
-                            <li class="fragment">
-                                Module Assertions<br/>
-                                <small>
-                                    assertModuleCodePool(),
-                                    assertModuleDepends(),
-                                    assertModuleVersion(),
-                                    &hellip;
-                                </small>
-                            </li>
-                            <li class="fragment">
-                                Layout Assertions<br/>
-                                <small>
-                                    assertLayoutFileDefined(),
-                                    assertLayoutFileExists(),
-                                    assertLayoutFileExistsInTheme(),
-                                    &hellip;
-                                </small>
-                            </li>
-                            <li class="fragment">
-                                Event Observer Assertions<br/>
-                                <small>
-                                    assertEventObserverDefined(),
-                                    assertEventObserverNotDefined(),
-                                    &hellip;
-                                </small>
-                            </li>
-                            <li class="fragment">
-                                Config Node Assertions<br/>
-                                <small>
-                                    assertConfigNodeHasChild(),
-                                    assertConfigNodeHasChildren(),
-                                    assertConfigNodeContainsValue(),
-                                    &hellip;
-                                </small>
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2>EcomDev_PHPUnit</h2>
-                        <h3>Configuration testing</h3>
+                    <p>Examples:</p>
+<pre><code class="php" data-trim>
+$this->dispatch('customer/account/login');
+$this->assertRequestRoute('customer/account/login');
+$this->assertLayoutHandleLoaded('customer_account_login');
+$this->assertLayoutHandleNotLoaded('cms_index_index');
+$this->assertResponseBodyContains('login or create');
+</code></pre>
 
 <pre><code class="php" data-trim>
-// app/code/local/Vendor/Module/Test/Config/Main.php
-
-class Vendor_Module_Test_Config_Main extends
-    EcomDev_PHPUnit_Test_Case_Config
-{
-    public function testRewrite()
-    {
-        $this->assertModelAlias(
-            'catalog/convert_adapter_product',
-            'Vendor_Module_Model_DataFlow_Catalog_Product_Adapter'
-        );
-        $this->assertBlockAlias(
-            'adminhtml/system_convert_gui_edit_tab_wizard',
-            'Vendor_Module_Block_Wizard'
-        );
-    }
-}
+$this->getRequest()->setQuery('id' => $productId));
+$this->getRequest()->setHeader('User-Agent', $userAgent);
+// Dispatches product view action in default store
+$this->dispatch('catalog/product/view', array('_store' => 'default');
 </code></pre>
-                    </section>
 
+                </section>
+
+                <section>
+                    <h2>Continous Integration</h2>
                 </section>
 
 			</div>
