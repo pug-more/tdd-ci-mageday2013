@@ -15,7 +15,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<link rel="stylesheet" href="css/reveal.min.css">
-		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
 
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -39,10 +39,8 @@
 				<section>
 					<h1>TDD & Continuous Integration</h1>
 					<h3>with Magento</h3>
-
                     <br />
-                    <br />
-                    <img src="http://www.gravatar.com/avatar/8c6973dad7179d7238b6e42adc8add08?s=145" alt="Gravatar" style="float:left; margin-right: 15px; margin-top: 0;"/>
+                    <img src="http://www.gravatar.com/avatar/8c6973dad7179d7238b6e42adc8add08?s=150" alt="Gravatar" style="float:left; margin-right: 15px; margin-top: 0;"/>
                     <p style="overflow: hidden; text-align: left;">
                         <small>
                             <strong>Manuele Menozzi</strong><br />
@@ -266,10 +264,12 @@ class Vendor_Module_Tests_Unit_SomethingTest extends
                     <h2>EcomDev_PHPUnit</h2>
                     <h3>Easy installation</h3>
 
-<pre style="width:1110px;"><code class="shell" data-trim>
+<pre><code class="shell" data-trim>
 $ modman clone [--branch=dev] git://github.com/EcomDev/EcomDev_PHPUnit.git
 $ cd /path/to/magento/shell
-$ php ecomdev-phpunit.php -a magento-config --db-name db_name --base-url http://your.magento.url/
+$ php ecomdev-phpunit.php -a magento-config \
+  --db-name db_name \
+  --base-url http://your.magento.url/
 $ cd /path/to/magento
 $ phpunit
 </code></pre>
@@ -499,7 +499,113 @@ $this->dispatch('catalog/product/view', array('_store' => 'default');
                 </section>
 
                 <section>
-                    <h2>Continous Integration</h2>
+                    <h2>TDD with Magento</h2>
+
+                    <p><strong>Not only EcomDev_PHPUnit</strong></p>
+                    <ul>
+                        <li class="fragment">
+                            Magento Test Automation Framework <br/>
+                            <small><a href="https://github.com/magento/taf">github.com/magento/taf</a></small>
+                        </li>
+                        <li class="fragment">
+                            Backport of Magento 2 Tests <br/>
+                            <small><a href="https://github.com/techdivision/TechDivision_MagentoUnitTesting">github.com/techdivision/TechDivision_MagentoUnitTesting</a></small>
+                        </li>
+                        <li class="fragment">
+                            Mage-Test <br/>
+                            <small><a href="https://github.com/MageTest/Mage-Test">github.com/MageTest/Mage-Test</a></small>
+                        </li>
+                        <li class="fragment">
+                            BehatMage <br/>
+                            <small><a href="https://github.com/MageTest/BehatMage">github.com/MageTest/BehatMage</a></small>
+                        </li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Continuous Integration</h2>
+
+                    <p><strong>What is it?</strong></p>
+                    <blockquote class="fragment">
+                        Continuous integration (CI) is the practice, in software engineering, of merging all developer
+                        working copies with a shared mainline several times a day.
+                    </blockquote>
+                </section>
+
+                <section>
+                    <h2>Continuous Integration</h2>
+
+                    <p><strong>Why do it?</strong></p>
+                    <ul>
+                        <li class="fragment">Reduce risk</li>
+                        <li class="fragment">Confidence</li>
+                        <li class="fragment">Tested builds</li>
+                        <li class="fragment">Reduce repetitive tasks</li>
+                        <li class="fragment">Quality assurance</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Continuous Integration</h2>
+
+                    <p><strong>Requirements</strong></p>
+                    <ul>
+                        <li class="fragment">Source code repository</li>
+                        <li class="fragment">Automated self-testing build</li>
+                        <li class="fragment">Every commit triggers a build</li>
+                        <li class="fragment">[ Automated deploy after every successful build ]</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Magento module Continuous Integration</h2>
+
+                    <p class="fragment"><strong>With the module on its on VCS repository, after every commit, we need to:</strong></p>
+                    <ul>
+                        <li class="fragment">Download and install a specific version of Magento</li>
+                        <li class="fragment">Install the module</li>
+                        <li class="fragment">Install EcomDev_PHPUnit</li>
+                        <li class="fragment">Run tests</li>
+                        <li class="fragment">Repeat the above steps for other Magento versions</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Magento module Continuous Integration</h2>
+
+                    <p>
+                        We can do it with MageCI by EcomDev (<a href="https://github.com/EcomDev/MageCI">github.com/EcomDev/MageCI</a>):
+                    </p>
+<pre><code class="shell" data-trim>
+$ mage-ci install $mage_dir $mage_version $dbname -u $dbuser -p $dbpass \
+    -o -c -t -r http://mage-ci.ecomdev.org
+$ mage-ci install-module $mage_dir .
+$ mage-ci install-module $mage_dir \
+    https://github.com/EcomDev/EcomDev_PHPUnit.git
+$ mage-ci phpunit $mage_dir
+</code></pre>
+                </section>
+
+                <section>
+                    <h2>Magento module Continuous Integration</h2>
+                    <h3>Jenkins Example</h3>
+
+                    <ul>
+                        <li class="fragment">Put previous commands in an ANT build</li>
+                        <li class="fragment">Multi-configuration job on Jenkins</li>
+                        <li class="fragment">User-defined axis -> mage_version = 1.5.1.0, 1.6.2.0, 1.7.0.2, [...]</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Magento module Continuous Integration</h2>
+                    <h3>Jenkins Example</h3>
+
+                    <img src="img/jenkins.png" alt="Jenkins"/>
+                </section>
+
+                <section>
+                    <h1>?</h1>
                 </section>
 
 			</div>
