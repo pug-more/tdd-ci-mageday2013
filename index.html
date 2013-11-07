@@ -54,122 +54,134 @@
 				</section>
 
                 <section>
-                    <h2>Test Driven Development</h2>
-
-                    <blockquote class="fragment">The repetition of a very short development cycle</blockquote>
-
-                    <p class="fragment">
-                        <img src="img/red-green-refactorFINAL2.png" alt="Red - Green - Refactor"/>
-                    </p>
-                </section>
-
-                <section>
                     <section>
                         <h2>Test Driven Development</h2>
-                        <h3>Example</h3>
+
+                        <blockquote class="fragment">The repetition of a very short development cycle</blockquote>
+
+                        <p class="fragment">
+                            <img src="img/red-green-refactorFINAL2.png" alt="Red - Green - Refactor"/>
+                        </p>
+                    </section>
+
+                        <!-- Bonus -->
+                        <section>
+                            <h2>Test Driven Development</h2>
+                            <h3>Example</h3>
 
 <pre><code class="php" data-trim>
-class MoneyTest extends \PHPUnit_Framework_TestCase
-{
+    class MoneyTest extends \PHPUnit_Framework_TestCase
+    {
     public function testMultiplication()
     {
-        $five = new Money(5);
-        $five->times(2);
-        $this->assertEquals(10, $five->amount);
+    $five = new Money(5);
+    $five->times(2);
+    $this->assertEquals(10, $five->amount);
     }
-}
+    }
 </code></pre>
 
 <pre class="fragment"><code class="php" data-trim>
-class Money
-{
+    class Money
+    {
     public $amount;
 
     public function __construct($amount) { /* TODO */ }
 
     public function times($multiplier) { /* TODO */ }
-}
+    }
 </code></pre>
 
-                        <p class="fragment"><span style="color:red;">RED</span></p>
-                    </section>
+                            <p class="fragment"><span style="color:red;">RED</span></p>
+                        </section>
 
-                    <section>
-                        <h2>Test Driven Development</h2>
-                        <h3>Example</h3>
+                        <section>
+                            <h2>Test Driven Development</h2>
+                            <h3>Example</h3>
 
 <pre><code class="php" data-trim>
-class Money
-{
+    class Money
+    {
     public $amount = 10; // aka 5 * 2
 
     public function __construct($amount)
     {
-        /* TODO */
+    /* TODO */
     }
 
     public function times($multiplier)
     {
-        /* TODO */
+    /* TODO */
     }
-}
+    }
 </code></pre>
 
-                        <p class="fragment"><span style="color:green;">GREEN</span></p>
-                    </section>
+                            <p class="fragment"><span style="color:green;">GREEN</span></p>
+                        </section>
 
-                    <section>
-                        <h2>Test Driven Development</h2>
-                        <h3>Example</h3>
+                        <section>
+                            <h2>Test Driven Development</h2>
+                            <h3>Example</h3>
 
 <pre><code class="php" data-trim>
-class Money
-{
+    class Money
+    {
     public $amount = 0;
 
     public function __construct($amount)
     {
-        $this->amount = $amount;
+    $this->amount = $amount;
     }
 
     public function times($multiplier)
     {
-        $this->amount *= $multiplier;
+    $this->amount *= $multiplier;
     }
-}
+    }
 </code></pre>
-                        <p class="fragment"><span style="color:#e7ad52;">REFACTOR</span></p>
+                            <p class="fragment"><span style="color:#e7ad52;">REFACTOR</span></p>
 
-                    </section>
-
-                </section>
-
-                <section>
-                    <h2>Test Driven Development</h2>
-                    <h3>benefits</h3>
-
-                    <ul>
-                        <li class="fragment">You can write small feature's subsets</li>
-                        <li class="fragment">You don't have to worry about all the complexity of your feature</li>
-                        <li class="fragment">All features are tested</li>
-                        <li class="fragment">You reduce bugs and regressions rate</li>
-                        <li class="fragment">Your code stays clean</li>
-                        <li class="fragment">Your code is documented</li>
-                        <li class="fragment">And last but not least, you're more confident in making changes!</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2>Tests Pyramid</h2>
-
-                    <img src="img/TestingPyramid.png" alt="Unit - Integration - Functional - Manual" />
+                        </section>
                 </section>
 
                 <section>
                     <section>
-                        <h2>Unit Tests with Magento</h2>
+                        <h2>Test Driven Development</h2>
+                        <h3>benefits</h3>
 
-                        <p><span class="fragment">Magento => Hardcoded dependencies </span><span class="fragment">=> Testing hell</span></p>
+                        <ul>
+                            <li class="fragment">You can write small feature's subsets (don't worry about all the complexity)</li>
+                            <li class="fragment">All features are tested</li>
+                            <li class="fragment">You reduce bugs and regressions rate</li>
+                            <li class="fragment">Your code stays clean</li>
+                            <li class="fragment">Your code is documented</li>
+                            <li class="fragment">And last but not least, you're more confident in making changes!</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>Tests Pyramid</h2>
+
+                        <img src="img/TestingPyramid.png" alt="Unit - Integration - Functional - Manual" />
+                    </section>
+                </section>
+                
+                <section>
+                    <h2>Test Driven Development</h2>
+                    <h3>In PHP</h3>
+                    <br/><br/>
+                    <p>
+                        <strong>PHPUnit</strong><br/>
+                        <a href="https://github.com/sebastianbergmann/phpunit/">
+                            github.com/sebastianbergmann/phpunit/
+                        </a>
+                    </p>
+                </section>
+
+                <section>
+                    <h2>Unit Tests with Magento</h2>
+
+                    <p><span class="fragment">Magento => Hardcoded dependencies </span><span class="fragment">=> Testing hell</span></p>
 <pre><code class="php" data-trim>
 class Vendor_Module_Model_Something extends Mage_Core_Model_Abstract
 {
@@ -180,11 +192,11 @@ class Vendor_Module_Model_Something extends Mage_Core_Model_Abstract
     }
 }
 </code></pre>
-                    </section>
+                </section>
 
-                    <section>
-                        <h2>Unit Tests with Magento</h2>
-                        <p>We have to refactor, for example with dependency injection&hellip;</p>
+                <section>
+                    <h2>Unit Tests with Magento</h2>
+                    <p>We have to refactor, for example with dependency injection&hellip;</p>
 
 <pre><code class="php" data-trim>
 class Vendor_Module_Model_Something extends Mage_Core_Model_Abstract
@@ -204,12 +216,12 @@ class Vendor_Module_Model_Something extends Mage_Core_Model_Abstract
     }
 }
 </code></pre>
-                    </section>
+                </section>
 
-                    <section>
-                        <h2>Unit Tests with Magento</h2>
+                <section>
+                    <h2>Unit Tests with Magento</h2>
 
-                        <p>&hellip; so we can test it with something like this:</p>
+                    <p>&hellip; so we can test it with something like this:</p>
 
 <pre><code class="php" data-trim>
 class Vendor_Module_Tests_Unit_SomethingTest extends
@@ -230,8 +242,6 @@ class Vendor_Module_Tests_Unit_SomethingTest extends
     }
 }
 </code></pre>
-                    </section>
-
                 </section>
 
                 <section>
@@ -239,30 +249,51 @@ class Vendor_Module_Tests_Unit_SomethingTest extends
                         Integration & Functional tests<br/>
                         with Magento
                     </h2>
-                    <br />
 
-                    <p class="fragment">
-                        <strong>EcomDev_PHPUnit</strong><br/>
-                        <a href="https://github.com/EcomDev/EcomDev_PHPUnit">
-                            github.com/EcomDev/EcomDev_PHPUnit
-                        </a>
-                    </p>
-                </section>
-
-                <section>
-                    <h2>EcomDev_PHPUnit</h2>
-
-                    <ul>
-                        <li class="fragment">Magento extension</li>
-                        <li class="fragment">Doesn't change core files</li>
-                        <li class="fragment">Separate database connection is used for tests</li>
-                        <li class="fragment">Different levels of test integration</li>
+                    <ul class="fragment">
+                        <li>
+                            Magento Test Automation Framework <br/>
+                            <small><a href="https://github.com/magento/taf">github.com/magento/taf</a></small>
+                        </li>
+                        <li>
+                            Backport of Magento 2 Tests <br/>
+                            <small><a href="https://github.com/techdivision/TechDivision_MagentoUnitTesting">github.com/techdivision/TechDivision_MagentoUnitTesting</a></small>
+                        </li>
+                        <li>
+                            Mage-Test <br/>
+                            <small><a href="https://github.com/MageTest/Mage-Test">github.com/MageTest/Mage-Test</a></small>
+                        </li>
+                        <li>
+                            BehatMage <br/>
+                            <small><a href="https://github.com/MageTest/BehatMage">github.com/MageTest/BehatMage</a></small>
+                        </li>
+                        <li>
+                            <strong>EcomDev_PHPUnit</strong><br/>
+                            <small>
+                                <a href="https://github.com/EcomDev/EcomDev_PHPUnit">
+                                    github.com/EcomDev/EcomDev_PHPUnit
+                                </a>
+                            </small>
+                        </li>
                     </ul>
                 </section>
 
+
                 <section>
-                    <h2>EcomDev_PHPUnit</h2>
-                    <h3>Easy installation</h3>
+                    <section>
+                        <h2>EcomDev_PHPUnit</h2>
+
+                        <ul>
+                            <li class="fragment">Magento extension</li>
+                            <li class="fragment">Doesn't change core files</li>
+                            <li class="fragment">Separate database connection is used for tests</li>
+                            <li class="fragment">Different levels of test integration</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2>EcomDev_PHPUnit</h2>
+                        <h3>Easy installation</h3>
 
 <pre><code class="shell" data-trim>
 $ modman clone [--branch=dev] git://github.com/EcomDev/EcomDev_PHPUnit.git
@@ -273,6 +304,7 @@ $ php ecomdev-phpunit.php -a magento-config \
 $ cd /path/to/magento
 $ phpunit
 </code></pre>
+                    </section>
                 </section>
 
                 <section>
@@ -293,27 +325,28 @@ $ phpunit
                 </section>
 
                 <section>
-                    <h2>EcomDev_PHPUnit</h2>
-                    <h3>Different levels of test integration</h3>
+                    <section>
+                        <h2>EcomDev_PHPUnit</h2>
+                        <h3>Different levels of test integration</h3>
 
-                    <ul>
-                        <li class="fragment">
-                            <strong>EcomDev_PHPUnit_Test_Case</strong> is for testing models, blocks and helpers
-                        </li>
-                        <li class="fragment">
-                            <strong>EcomDev_PHPUnit_Test_Case_Config</strong> is for testing your module configuration
-                        </li>
-                        <li class="fragment">
-                            <strong>EcomDev_PHPUnit_Test_Case_Controller</strong> is for testing your controller actions
-                            and layout rendering process
-                        </li>
-                    </ul>
-                </section>
+                        <ul>
+                            <li class="fragment">
+                                <strong>EcomDev_PHPUnit_Test_Case</strong> is for testing models, blocks and helpers
+                            </li>
+                            <li class="fragment">
+                                <strong>EcomDev_PHPUnit_Test_Case_Config</strong> is for testing your module configuration
+                            </li>
+                            <li class="fragment">
+                                <strong>EcomDev_PHPUnit_Test_Case_Controller</strong> is for testing your controller actions
+                                and layout rendering process
+                            </li>
+                        </ul>
+                    </section>
 
-                <section>
-                    <h2>EcomDev_PHPUnit</h2>
+                    <section>
+                        <h2>EcomDev_PHPUnit</h2>
 
-                    <p>Put every test in its place</p>
+                        <p>Put every test in its place</p>
 <pre><code class="no-highlight" data-trim>
     app/code/local/Vendor/Module
     ├── Block
@@ -328,13 +361,14 @@ $ phpunit
     ├── controllers
     └── etc
 </code></pre>
+                    </section>
                 </section>
 
                 <section>
                     <h2>EcomDev_PHPUnit</h2>
 
                     <ul>
-                        <li class="fragment"><strong>Fixtures</strong> support (YAML files)</li>
+                        <li class="fragment"><strong>Fixtures</strong> support (YAML files, database purge)</li>
                         <li class="fragment"><strong>Expectations</strong> support (YAML files)</li>
                         <li class="fragment"><strong>Data providers</strong> support (YAML files)</li>
                         <li class="fragment"><strong>Indexing</strong> control (@doNotIndex & @doNotIndexAll)</li>
@@ -359,32 +393,6 @@ $ phpunit
                             </small>
                         </li>
                     </ul>
-                </section>
-
-                <section>
-                    <section>
-                        <h2>EcomDev_PHPUnit</h2>
-                        <h3>Fixtures</h3>
-
-                        <ul>
-                            <li class="fragment">Implemented with YAML files</li>
-                            <li class="fragment">Enabled with @loadFixture annotation</li>
-                            <li class="fragment">Database purge system (after test run & not for all tables)</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>EcomDev_PHPUnit</h2>
-                        <h3>Fixtures</h3>
-
-                        <p>YAML files capabilities:</p>
-                        <ul>
-                            <li class="fragment">scope</li>
-                            <li class="fragment">config</li>
-                            <li class="fragment">configXml</li>
-                            <li class="fragment">eav</li>
-                            <li class="fragment">tables</li>
-                        </ul>
-                    </section>
                 </section>
 
                 <section>
@@ -447,10 +455,9 @@ $ phpunit
                     <h3>Controller testing</h3>
 
                     <ul>
-                        <li class="fragment"><em>dispatch()</em> of controller actions</li>
                         <li class="fragment">
-                            Request object handling <br/>
-                            <small>setCookies(), setParams(), setHeaders(), &hellip;</small>
+                            Dispatch of controller actions <br/>
+                            <small>$this->dispatch('customer/account/create');</small>
                         </li>
                         <li class="fragment">
                             Response object handling & assertions <br/>
@@ -476,53 +483,6 @@ $ phpunit
                 </section>
 
                 <section>
-
-                    <h2>EcomDev_PHPUnit</h2>
-                    <h3>Controller testing</h3>
-
-                    <p>Examples:</p>
-<pre><code class="php" data-trim>
-$this->dispatch('customer/account/login');
-$this->assertRequestRoute('customer/account/login');
-$this->assertLayoutHandleLoaded('customer_account_login');
-$this->assertLayoutHandleNotLoaded('cms_index_index');
-$this->assertResponseBodyContains('login or create');
-</code></pre>
-
-<pre><code class="php" data-trim>
-$this->getRequest()->setQuery('id' => $productId));
-$this->getRequest()->setHeader('User-Agent', $userAgent);
-// Dispatches product view action in default store
-$this->dispatch('catalog/product/view', array('_store' => 'default');
-</code></pre>
-
-                </section>
-
-                <section>
-                    <h2>TDD with Magento</h2>
-
-                    <p><strong>Not only EcomDev_PHPUnit</strong></p>
-                    <ul>
-                        <li class="fragment">
-                            Magento Test Automation Framework <br/>
-                            <small><a href="https://github.com/magento/taf">github.com/magento/taf</a></small>
-                        </li>
-                        <li class="fragment">
-                            Backport of Magento 2 Tests <br/>
-                            <small><a href="https://github.com/techdivision/TechDivision_MagentoUnitTesting">github.com/techdivision/TechDivision_MagentoUnitTesting</a></small>
-                        </li>
-                        <li class="fragment">
-                            Mage-Test <br/>
-                            <small><a href="https://github.com/MageTest/Mage-Test">github.com/MageTest/Mage-Test</a></small>
-                        </li>
-                        <li class="fragment">
-                            BehatMage <br/>
-                            <small><a href="https://github.com/MageTest/BehatMage">github.com/MageTest/BehatMage</a></small>
-                        </li>
-                    </ul>
-                </section>
-
-                <section>
                     <h2>Continuous Integration</h2>
 
                     <p><strong>What is it?</strong></p>
@@ -538,6 +498,7 @@ $this->dispatch('catalog/product/view', array('_store' => 'default');
                     <p><strong>Why do it?</strong></p>
                     <ul>
                         <li class="fragment">Reduce risk</li>
+                        <li class="fragment">Reduce costs</li>
                         <li class="fragment">Confidence</li>
                         <li class="fragment">Tested builds</li>
                         <li class="fragment">Reduce repetitive tasks</li>
@@ -560,7 +521,7 @@ $this->dispatch('catalog/product/view', array('_store' => 'default');
                 <section>
                     <h2>Magento module Continuous Integration</h2>
 
-                    <p class="fragment"><strong>With the module on its on VCS repository, after every commit, we need to:</strong></p>
+                    <p class="fragment"><strong>We have to:</strong></p>
                     <ul>
                         <li class="fragment">Download and install a specific version of Magento</li>
                         <li class="fragment">Install the module</li>
@@ -589,9 +550,13 @@ $ mage-ci phpunit $mage_dir
                 <section>
                     <h2>Magento module Continuous Integration</h2>
                     <h3>Jenkins Example</h3>
+                    
+                    <p>
+                        <a href="http://jenkins-ci.org/">jenkins-ci.org</a>
+                    </p>
 
                     <ul>
-                        <li class="fragment">Put previous commands in an ANT build</li>
+                        <li class="fragment">Put previous commands in a bash script or an ANT build</li>
                         <li class="fragment">Multi-configuration job on Jenkins</li>
                         <li class="fragment">User-defined axis -> mage_version = 1.5.1.0, 1.6.2.0, 1.7.0.2, [...]</li>
                     </ul>
