@@ -40,7 +40,7 @@
 					<h1>TDD & Continuous Integration</h1>
 					<h3>with Magento</h3>
                     <br />
-                    <img src="http://www.gravatar.com/avatar/8c6973dad7179d7238b6e42adc8add08?s=150" alt="Gravatar" style="float:left; margin-right: 15px; margin-top: 0;"/>
+                    <img src="img/avatar.jpeg" alt="Gravatar" style="float:left; margin-right: 15px; margin-top: 0;"/>
                     <p style="overflow: hidden; text-align: left;">
                         <small>
                             <strong>Manuele Menozzi</strong><br />
@@ -64,32 +64,33 @@
                         </p>
                     </section>
 
-                        <!-- Bonus -->
+                        <!-- Bonus
+
                         <section>
                             <h2>Test Driven Development</h2>
                             <h3>Example</h3>
 
 <pre><code class="php" data-trim>
-    class MoneyTest extends \PHPUnit_Framework_TestCase
-    {
+class MoneyTest extends \PHPUnit_Framework_TestCase
+{
     public function testMultiplication()
     {
-    $five = new Money(5);
-    $five->times(2);
-    $this->assertEquals(10, $five->amount);
+        $five = new Money(5);
+        $five->times(2);
+        $this->assertEquals(10, $five->amount);
     }
-    }
+}
 </code></pre>
 
 <pre class="fragment"><code class="php" data-trim>
-    class Money
-    {
+class Money
+{
     public $amount;
 
     public function __construct($amount) { /* TODO */ }
 
     public function times($multiplier) { /* TODO */ }
-    }
+}
 </code></pre>
 
                             <p class="fragment"><span style="color:red;">RED</span></p>
@@ -100,20 +101,20 @@
                             <h3>Example</h3>
 
 <pre><code class="php" data-trim>
-    class Money
-    {
+class Money
+{
     public $amount = 10; // aka 5 * 2
 
     public function __construct($amount)
     {
-    /* TODO */
+       /* TODO */
     }
 
     public function times($multiplier)
     {
-    /* TODO */
+        /* TODO */
     }
-    }
+}
 </code></pre>
 
                             <p class="fragment"><span style="color:green;">GREEN</span></p>
@@ -124,24 +125,25 @@
                             <h3>Example</h3>
 
 <pre><code class="php" data-trim>
-    class Money
-    {
+class Money
+{
     public $amount = 0;
 
     public function __construct($amount)
     {
-    $this->amount = $amount;
+       $this->amount = $amount;
     }
 
     public function times($multiplier)
     {
-    $this->amount *= $multiplier;
+        $this->amount *= $multiplier;
     }
-    }
+}
 </code></pre>
                             <p class="fragment"><span style="color:#e7ad52;">REFACTOR</span></p>
 
                         </section>
+                        -->
                 </section>
 
                 <section>
@@ -158,12 +160,13 @@
                             <li class="fragment">And last but not least, you're more confident in making changes!</li>
                         </ul>
                     </section>
-
+                    <!-- Bonus
                     <section>
                         <h2>Tests Pyramid</h2>
 
                         <img src="img/TestingPyramid.png" alt="Unit - Integration - Functional - Manual" />
                     </section>
+                    -->
                 </section>
                 
                 <section>
@@ -264,8 +267,8 @@ class Vendor_Module_Tests_Unit_SomethingTest extends
                             <small><a href="https://github.com/MageTest/Mage-Test">github.com/MageTest/Mage-Test</a></small>
                         </li>
                         <li>
-                            BehatMage <br/>
-                            <small><a href="https://github.com/MageTest/BehatMage">github.com/MageTest/BehatMage</a></small>
+                            MageSpec <br/>
+                            <small><a href="https://github.com/MageHack/MageSpec">github.com/MageHack/MageSpec</a></small>
                         </li>
                         <li>
                             <strong>EcomDev_PHPUnit</strong><br/>
@@ -290,7 +293,7 @@ class Vendor_Module_Tests_Unit_SomethingTest extends
                             <li class="fragment">Different levels of test integration</li>
                         </ul>
                     </section>
-
+                    <!-- Bonus
                     <section>
                         <h2>EcomDev_PHPUnit</h2>
                         <h3>Easy installation</h3>
@@ -305,6 +308,7 @@ $ cd /path/to/magento
 $ phpunit
 </code></pre>
                     </section>
+                    -->
                 </section>
 
                 <section>
@@ -343,6 +347,7 @@ $ phpunit
                         </ul>
                     </section>
 
+                    <!--
                     <section>
                         <h2>EcomDev_PHPUnit</h2>
 
@@ -362,6 +367,7 @@ $ phpunit
     └── etc
 </code></pre>
                     </section>
+                    -->
                 </section>
 
                 <section>
